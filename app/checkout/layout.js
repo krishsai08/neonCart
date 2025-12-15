@@ -3,7 +3,6 @@
 import { useAuth } from "../../context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { supabase } from "../../lib/supabase";
 
 export default function CheckoutLayout({ children }) {
   const { user, loading } = useAuth();
@@ -12,15 +11,14 @@ export default function CheckoutLayout({ children }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      // double-check with Supabase in case AuthContext is stale
-      (async () => {
-        const { data } = await supabase.auth.getUser();
-        if (data?.user) return; // user is actually logged in, don't redirect
-        router.replace(`/login?next=${encodeURIComponent(pathname)}`);
-      })();
+      router.replace(`/login?next=${encodeURIComponent(pathname)}`);
     }
   }, [user, loading, pathname, router]);
 
+  // Block render until auth state is known
+  if (loading) return null;
+
+  // Block checkout if not logged in
   if (!user) return null;
 
   return children;

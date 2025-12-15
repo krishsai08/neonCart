@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-bg text-slate-900;
+@layer base {
+  body {
+    @apply bg-[#0b0b10] text-white antialiased;
+  }
+}
+
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-[#12121a] rounded-xl border border-white/5 shadow-sm;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium transition;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-black hover:opacity-90;
+  }
+
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary to-accent text-black hover:opacity-90;
+  }
+
+  .btn-ghost {
+    @apply bg-white/5 hover:bg-white/10;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full rounded-lg bg-[#0f0f17] px-3 py-2
+           outline-none ring-1 ring-white/10
+           focus:ring-primary placeholder:text-white/40;
+  }
+
+  .label {
+    @apply text-sm text-white/60;
+  }
+
+  /* Skeleton */
+  .skeleton {
+    @apply animate-pulse bg-white/10 rounded;
+  }
 }
