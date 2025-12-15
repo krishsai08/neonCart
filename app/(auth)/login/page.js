@@ -1,106 +1,106 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { supabase } from "../../../lib/supabase";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [next, setNext] = useState(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setNext(params.get("next") ?? "/products");
-
-      // If user is already signed in according to Supabase, redirect
-      (async () => {
-        const { data } = await supabase.auth.getUser();
-        if (data?.user) {
-          const target = params.get("next") ?? "/products";
-          router.replace(target);
-        }
-      })();
-    }
-  }, [router]);
+  const { user, loading } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [nextPath, setNextPath] = useState("/products");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setNextPath(params.get("next") || "/products");
+  }, []);
+
+  useEffect(() => {
+    if (!loading && user) router.replace(nextPath);
+  }, [user, loading, router, nextPath]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
-    setLoading(true);
+    setSubmitting(true);
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    setLoading(false);
+    setSubmitting(false);
 
     if (error) {
       setError(error.message);
       return;
     }
 
-    // Compute redirect target reliably from `next` state or URL
-    let redirectTo = next;
-    if (!redirectTo && typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      redirectTo = params.get("next") ?? "/products";
-    }
-
-    router.replace(redirectTo ?? "/products");
+    router.replace(nextPath);
   }
 
+  if (loading || user) return null;
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md bg-surface p-6 rounded-2xl space-y-4"
-      >
-        <h1 className="text-2xl font-bold text-center text-primary">
-          Login to NeonCart
-        </h1>
+    <div className="min-h-screen flex items-center justify-center auth-bg px-4">
+      <div className="w-full max-w-md">
+        <div className="card p-8 space-y-5">
+          <div className="text-center space-y-1">
+            <h1 className="text-2xl font-semibold text-gray-800">
+              Welcome back
+            </h1>
+            <p className="text-sm text-gray-500">Login to continue shopping</p>
+          </div>
 
-        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+          {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-        <input
-          className="w-full p-3 rounded bg-bg outline-none"
-          type="email"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="label mb-1 block">Email</label>
+              <input
+                type="email"
+                required
+                className="input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+              />
+            </div>
 
-        <input
-          className="w-full p-3 rounded bg-bg outline-none"
-          type="password"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+            <div>
+              <label className="label mb-1 block">Password</label>
+              <input
+                type="password"
+                required
+                className="input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+            </div>
 
-        <button
-          disabled={loading}
-          className="w-full bg-primary py-3 rounded text-black font-semibold"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+            <button
+              disabled={submitting}
+              className="btn btn-primary w-full mt-2"
+            >
+              {submitting ? "Logging in..." : "Login"}
+            </button>
+          </form>
 
-        <p className="text-center text-sm text-muted">
-          Don’t have an account?{" "}
-          <Link href="/signup" className="text-accent">
-            Sign up
-          </Link>
-        </p>
-      </form>
+          <p className="text-sm text-center text-gray-500">
+            Don’t have an account?{" "}
+            <Link href="/signup" className="text-[#2874f0] font-medium">
+              Sign up
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

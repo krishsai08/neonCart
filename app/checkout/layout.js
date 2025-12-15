@@ -1,25 +1,32 @@
 "use client";
 
-import { useAuth } from "../../context/AuthContext";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect } from "react";
+import AuthGuard from "../../components/AuthGuard";
+import { useCheckout } from "../../context/CheckoutContext";
 
 export default function CheckoutLayout({ children }) {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const pathname = usePathname();
+  const { step } = useCheckout();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace(`/login?next=${encodeURIComponent(pathname)}`);
-    }
-  }, [user, loading, pathname, router]);
+  const steps = ["Address", "Payment", "Summary", "Confirm"];
 
-  // Block render until auth state is known
-  if (loading) return null;
+  return (
+    <AuthGuard>
+      <div className="max-w-5xl mx-auto p-6">
+        {/* Step Indicator */}
+        <div className="flex justify-between mb-8">
+          {steps.map((s, i) => (
+            <div
+              key={s}
+              className={`text-sm font-medium ${
+                step === i + 1 ? "text-[#2874f0]" : "text-gray-400"
+              }`}
+            >
+              {i + 1}. {s}
+            </div>
+          ))}
+        </div>
 
-  // Block checkout if not logged in
-  if (!user) return null;
-
-  return children;
+        {children}
+      </div>
+    </AuthGuard>
+  );
 }
