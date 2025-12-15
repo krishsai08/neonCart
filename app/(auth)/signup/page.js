@@ -12,6 +12,8 @@ export default function SignupPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
 
   // 🚫 Block logged-in users
@@ -23,10 +25,10 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signUp(
+      { email, password },
+      { data: { full_name: name, phone } }
+    );
 
     if (error) {
       setError(error.message);
@@ -62,6 +64,22 @@ export default function SignupPage() {
 
         <input
           className="w-full p-3 rounded bg-bg outline-none"
+          type="text"
+          placeholder="Full name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <input
+          className="w-full p-3 rounded bg-bg outline-none"
+          type="tel"
+          placeholder="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+
+        <input
+          className="w-full p-3 rounded bg-bg outline-none"
           type="password"
           placeholder="Password (min 6 chars)"
           required
@@ -69,7 +87,7 @@ export default function SignupPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="w-full bg-accent py-3 rounded text-black font-semibold hover:opacity-90 transition">
+        <button className="w-full bg-gradient-to-r from-primary to-accent py-3 rounded text-white font-semibold hover:opacity-90 transition">
           Sign Up
         </button>
 

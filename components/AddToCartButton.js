@@ -10,7 +10,7 @@ export default function AddToCartButton({ product }) {
   return (
     <button
       onClick={() => dispatch({ type: "ADD", payload: product })}
-      className="mt-4 bg-accent text-black px-6 py-2 rounded"
+      className="mt-4 bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded shadow"
     >
       Add to Cart
     </button>

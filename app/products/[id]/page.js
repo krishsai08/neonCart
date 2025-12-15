@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { getProduct } from "../../../lib/apiProducts";
-import AddToCartButton from "../../../components/AddToCartButton";
+import ProductCartActions from "../../../components/ProductCartActions";
 
 export default async function ProductDetail({ params }) {
-  const product = await getProduct(params.id);
+  const { id } = await params;
+  const product = await getProduct(id);
 
   if (!product) return null;
 
@@ -19,7 +20,7 @@ export default async function ProductDetail({ params }) {
       <h1 className="text-3xl">{product.name}</h1>
       <p className="text-muted">{product.description}</p>
       <p className="mt-2">₹{product.price}</p>
-      <AddToCartButton product={product} />
+      <ProductCartActions product={product} />
     </div>
   );
 }

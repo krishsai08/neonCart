@@ -30,7 +30,7 @@ export default function Confirm() {
       <p>Total: ₹{total}</p>
       <button
         onClick={handleConfirm}
-        className="mt-4 bg-accent text-black px-6 py-2 rounded"
+        className="mt-4 bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded"
       >
         Place Order
       </button>
