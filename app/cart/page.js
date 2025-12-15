@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "../../context/CartContext";
+import { supabase } from "../../lib/supabase";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
@@ -13,10 +14,12 @@ export default function CartPage() {
 
   function handleCheckout() {
     if (cart.length === 0) return;
-    if (!user && !loading)
-      return router.push(
-        `/login?next=${encodeURIComponent("/checkout/address")}`
-      );
+
+    if (!user) {
+      router.push(`/login?next=${encodeURIComponent("/checkout/address")}`);
+      return;
+    }
+
     router.push("/checkout/address");
   }
 

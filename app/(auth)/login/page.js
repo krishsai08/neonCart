@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../context/AuthContext";
 import Link from "next/link";
 
 export default function LoginPage() {
-  const { user, loading } = useAuth();
   const router = useRouter();
   const [next, setNext] = useState(null);
 
@@ -15,36 +13,49 @@ export default function LoginPage() {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       setNext(params.get("next") ?? "/products");
+
+      // If user is already signed in according to Supabase, redirect
+      (async () => {
+        const { data } = await supabase.auth.getUser();
+        if (data?.user) {
+          const target = params.get("next") ?? "/products";
+          router.replace(target);
+        }
+      })();
     }
-  }, []);
+  }, [router]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  // 🚫 Block logged-in users
-  useEffect(() => {
-    if (!loading && user && next !== null) router.push(next);
-  }, [user, loading, router, next]);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+    setLoading(false);
+
     if (error) {
       setError(error.message);
       return;
     }
 
-    router.push(next);
-  }
+    // Compute redirect target reliably from `next` state or URL
+    let redirectTo = next;
+    if (!redirectTo && typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      redirectTo = params.get("next") ?? "/products";
+    }
 
-  if (loading || user) return null;
+    router.replace(redirectTo ?? "/products");
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -61,7 +72,7 @@ export default function LoginPage() {
         <input
           className="w-full p-3 rounded bg-bg outline-none"
           type="email"
-          placeholder="Email address"
+          placeholder="Email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -76,8 +87,11 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="w-full bg-primary py-3 rounded text-black font-semibold hover:opacity-90 transition">
-          Login
+        <button
+          disabled={loading}
+          className="w-full bg-primary py-3 rounded text-black font-semibold"
+        >
+          {loading ? "Logging in..." : "Login"}
         </button>
 
         <p className="text-center text-sm text-muted">

@@ -10,16 +10,24 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data?.user ?? null);
+    let mounted = true;
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      setUser(data?.session?.user ?? null);
       setLoading(false);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_, session) =>
-      setUser(session?.user ?? null)
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
 
-    return () => listener.subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   return (
