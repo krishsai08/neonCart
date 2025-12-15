@@ -9,6 +9,14 @@ import Link from "next/link";
 export default function LoginPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [next, setNext] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setNext(params.get("next") ?? "/products");
+    }
+  }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,8 +24,8 @@ export default function LoginPage() {
 
   // 🚫 Block logged-in users
   useEffect(() => {
-    if (!loading && user) router.push("/products");
-  }, [user, loading, router]);
+    if (!loading && user && next !== null) router.push(next);
+  }, [user, loading, router, next]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -33,7 +41,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/products");
+    router.push(next);
   }
 
   if (loading || user) return null;

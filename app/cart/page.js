@@ -13,7 +13,10 @@ export default function CartPage() {
 
   function handleCheckout() {
     if (cart.length === 0) return;
-    if (!user && !loading) return router.push("/login");
+    if (!user && !loading)
+      return router.push(
+        `/login?next=${encodeURIComponent("/checkout/address")}`
+      );
     router.push("/checkout/address");
   }
 
