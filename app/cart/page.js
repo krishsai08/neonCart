@@ -15,11 +15,14 @@ export default function CartPage() {
   function handleCheckout() {
     if (cart.length === 0) return;
 
-    if (!user) {
-      router.push(`/login?next=${encodeURIComponent("/checkout/address")}`);
-      return;
-    }
+    console.debug("Cart: handleCheckout", {
+      user,
+      loading,
+      cartLength: cart.length,
+    });
 
+    // navigate to the checkout address page and allow CheckoutLayout to
+    // verify authentication and handle redirecting to login if necessary
     router.push("/checkout/address");
   }
 
