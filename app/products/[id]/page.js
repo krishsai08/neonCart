@@ -1,17 +1,9 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getProduct } from "../../../lib/apiProducts";
-import { useCart } from "../../../context/CartContext";
+import AddToCartButton from "../../../components/AddToCartButton";
 
-export default function ProductDetail({ params }) {
-  const [product, setProduct] = useState(null);
-  const { dispatch } = useCart();
-
-  useEffect(() => {
-    getProduct(params.id).then(setProduct);
-  }, [params.id]);
+export default async function ProductDetail({ params }) {
+  const product = await getProduct(params.id);
 
   if (!product) return null;
 
@@ -27,12 +19,7 @@ export default function ProductDetail({ params }) {
       <h1 className="text-3xl">{product.name}</h1>
       <p className="text-muted">{product.description}</p>
       <p className="mt-2">₹{product.price}</p>
-      <button
-        onClick={() => dispatch({ type: "ADD", payload: product })}
-        className="mt-4 bg-accent text-black px-6 py-2 rounded"
-      >
-        Add to Cart
-      </button>
+      <AddToCartButton product={product} />
     </div>
   );
 }

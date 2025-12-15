@@ -66,8 +66,8 @@ export default function ProductsPage() {
       <Filters filters={filters} setFilters={setFilters} />
 
       <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-        {filtered.map((p) => (
-          <ProductCard key={p.id} product={p} />
+        {filtered.map((p, i) => (
+          <ProductCard key={`${p.id}-${i}`} product={p} />
         ))}
         {hasMore && (
           <div ref={loaderRef} className="col-span-full text-center">
