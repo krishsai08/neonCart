@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { getProduct } from "../../../lib/apiProducts";
 import { useCart } from "../../../context/CartContext";
 
@@ -16,7 +17,13 @@ export default function ProductDetail({ params }) {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <img src={product.image} className="rounded mb-4" />
+      <Image
+        src={product.image}
+        alt={product.name || "product image"}
+        width={800}
+        height={500}
+        className="rounded mb-4 object-cover"
+      />
       <h1 className="text-3xl">{product.name}</h1>
       <p className="text-muted">{product.description}</p>
       <p className="mt-2">₹{product.price}</p>

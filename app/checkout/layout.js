@@ -10,7 +10,7 @@ export default function CheckoutLayout({ children }) {
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   if (!user) return null;
 

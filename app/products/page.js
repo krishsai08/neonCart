@@ -36,8 +36,21 @@ export default function ProductsPage() {
   useInfiniteScroll(loaderRef, loadMore);
 
   useEffect(() => {
-    loadMore();
-    // eslint-disable-next-line
+    let mounted = true;
+    (async () => {
+      const newProducts = await getProductsPage({ page: 0 });
+      if (!mounted) return;
+      if (newProducts.length === 0) {
+        setHasMore(false);
+        return;
+      }
+      setProducts(newProducts);
+      setPage(1);
+    })();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const filtered = products.filter(
