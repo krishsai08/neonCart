@@ -2,67 +2,226 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---------------------------
-   LIGHT MODE (DEFAULT)
-----------------------------*/
+/* ======================================================
+   COLOR TOKENS
+====================================================== */
+:root {
+  --bg-main: #fcf6d9;
+  --bg-accent: #9cc6db;
+  --surface: #ffffff;
+  --border: #e6dfc6;
+
+  --primary: #9cc6db;
+  --accent: #cf4b00;
+  --secondary: #ddba7d;
+
+  --text-main: #2b2b2b;
+  --text-muted: #6b6b6b;
+}
+
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-playfair: "Playfair Display", serif;
+}
+
+body {
+  font-family: var(--font-inter);
+}
+
+/* ======================================================
+   GLOBAL PAGE BACKGROUND (ALL PAGES)
+====================================================== */
 @layer base {
   body {
-    @apply bg-[#f7f8fa] text-gray-800 antialiased;
+    min-height: 100vh;
+    color: var(--text-main);
+    background: radial-gradient(
+        1200px 600px at 20% -10%,
+        rgba(156, 198, 219, 0.45),
+        transparent 60%
+      ),
+      linear-gradient(180deg, var(--bg-accent) 0%, var(--bg-main) 55%);
+    @apply antialiased;
   }
 }
 
-/* ---------------------------
+/* ======================================================
    COMPONENTS
-----------------------------*/
+====================================================== */
 @layer components {
-  /* Card */
   .card {
-    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    @apply rounded-2xl shadow-soft;
   }
 
-  /* Buttons */
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg
-           px-4 py-2 text-sm font-medium transition;
+    @apply inline-flex items-center justify-center
+           rounded-lg px-4 py-2 text-sm font-medium transition;
   }
 
   .btn-primary {
-    @apply bg-[#2874f0] text-white hover:bg-[#1f5edb];
+    background-color: var(--accent);
+    color: #ffffff;
+  }
+
+  .btn-primary:hover {
+    filter: brightness(0.95);
   }
 
   .btn-ghost {
-    @apply bg-gray-100 hover:bg-gray-200 text-gray-700;
+    background-color: transparent;
+    color: var(--text-main);
   }
 
-  /* Inputs */
+  .btn-ghost:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
   .input {
-    @apply w-full rounded-lg bg-white px-3 py-2
-           border border-gray-300
-           outline-none
-           focus:ring-2 focus:ring-[#2874f0]/40;
+    background-color: #fffdf2;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    @apply w-full rounded-lg px-3 py-2 outline-none transition;
+  }
+
+  .input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(156, 198, 219, 0.4);
   }
 
   .label {
-    @apply text-sm text-gray-600;
+    color: var(--text-muted);
+    @apply text-sm;
   }
 }
 
-/* ---------------------------
-   DARK MODE (OPTIONAL, SOFT)
-----------------------------*/
+/* ======================================================
+   DARK MODE (IMPROVED CONTRAST & READABILITY)
+====================================================== */
+.dark {
+  --bg-main: #1c1b17; /* page background */
+  --bg-accent: #24343c; /* soft blue wash */
+  --surface: #2f2e28; /* cards (lighter than bg) */
+  --border: #3f3d35;
+
+  --text-main: #f7f5ee; /* primary text */
+  --text-muted: #c8c3b4; /* secondary text */
+}
+
 .dark body {
-  background-color: #f1f3f6;
-  color: #1f2937;
+  background: radial-gradient(
+      1200px 600px at 20% -10%,
+      rgba(156, 198, 219, 0.22),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--bg-accent) 0%, var(--bg-main) 60%);
 }
 
+/* Cards */
 .dark .card {
-  background-color: #ffffff;
-  border-color: #e5e7eb;
+  background-color: var(--surface);
+  border-color: var(--border);
 }
 
-.dark .btn-ghost {
-  background-color: #e5e7eb;
+/* Inputs */
+.dark .input {
+  background-color: #35342e;
+  border-color: var(--border);
+  color: var(--text-main);
 }
-.auth-bg {
-  background: linear-gradient(180deg, #eef3ff 0%, #f7f8fa 40%, #f7f8fa 100%);
+
+.dark .input::placeholder {
+  color: #a8a393;
+}
+
+/* Buttons */
+.dark .btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ======================================================
+   MOBILE-FIRST RESPONSIVE HELPERS (non-invasive)
+   - Mobile-first defaults use CSS variables below
+   - Add classes: `container`, `stack`, `r-grid`, `text-base` ✅
+   - These helpers are additive and won't change existing rules
+====================================================== */
+@layer utilities {
+  :root {
+    /* mobile defaults */
+    --container-padding: 1rem;
+    --container-max-width: 100%;
+    --font-size-base: 16px;
+    --stack-gap: 0.75rem;
+    --grid-gap: 1rem;
+  }
+
+  /* Layout helpers */
+  .container {
+    width: 100%;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+    margin-left: auto;
+    margin-right: auto;
+    max-width: var(--container-max-width);
+  }
+
+  /* Stack: column on mobile */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-gap);
+  }
+
+  /* Responsive grid: 1col mobile, expands at breakpoints */
+  .r-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--grid-gap);
+  }
+
+  .text-base {
+    font-size: var(--font-size-base);
+  }
+
+  /* BREAKPOINTS (mobile-first overrides) */
+  @media (min-width: 640px) {
+    :root {
+      --container-padding: 1.25rem;
+      --stack-gap: 1rem;
+      --grid-gap: 1rem;
+    }
+
+    .r-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --container-padding: 2rem;
+      --container-max-width: 720px;
+      --stack-gap: 1.25rem;
+      --grid-gap: 1.25rem;
+      --font-size-base: 18px;
+    }
+
+    .r-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stack--row-md {
+      flex-direction: row;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --container-max-width: 1024px;
+    }
+
+    .r-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
 }

@@ -1,14 +1,22 @@
-"use client";
-
 import { useEffect } from "react";
 
-export default function useInfiniteScroll(ref, callback) {
+export default function useInfiniteScroll(ref, onLoadMore) {
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) callback();
-    });
+    if (!ref.current) return;
 
-    if (ref.current) observer.observe(ref.current);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          onLoadMore();
+        }
+      },
+      {
+        rootMargin: "200px", // load a bit earlier
+      }
+    );
+
+    observer.observe(ref.current);
+
     return () => observer.disconnect();
-  }, [callback, ref]);
+  }, [ref, onLoadMore]);
 }

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import Spinner from "@/components/Spinner";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [nextPath, setNextPath] = useState("/products");
 
   useEffect(() => {
@@ -22,7 +24,10 @@ export default function LoginPage() {
   }, []);
 
   useEffect(() => {
-    if (!loading && user) router.replace(nextPath);
+    if (!loading && user) {
+      setRedirecting(true);
+      router.replace(nextPath);
+    }
   }, [user, loading, router, nextPath]);
 
   async function handleSubmit(e) {
@@ -35,31 +40,47 @@ export default function LoginPage() {
       password,
     });
 
-    setSubmitting(false);
-
     if (error) {
       setError(error.message);
+      setSubmitting(false);
       return;
     }
 
-    router.replace(nextPath);
+    // success → full page loader will take over
+    setRedirecting(true);
   }
 
-  if (loading || user) return null;
+  /* ===============================
+     GLOBAL LOADING STATES
+  =============================== */
+  if (loading || redirecting) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+        <Spinner size={42} />
+        <p className="text-sm text-text-muted">Loading products…</p>
+      </div>
+    );
+  }
+
+  if (user) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center auth-bg px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="card p-8 space-y-5">
+        <div className="bg-surface border border-border rounded-2xl shadow-soft p-8 space-y-6">
+          {/* Header */}
           <div className="text-center space-y-1">
-            <h1 className="text-2xl font-semibold text-gray-800">
+            <h1 className="text-2xl font-semibold text-text-main">
               Welcome back
             </h1>
-            <p className="text-sm text-gray-500">Login to continue shopping</p>
+            <p className="text-sm text-text-muted">
+              Login to continue shopping
+            </p>
           </div>
 
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label mb-1 block">Email</label>
@@ -85,17 +106,22 @@ export default function LoginPage() {
               />
             </div>
 
+            {/* Button – NO SIZE CHANGE */}
             <button
               disabled={submitting}
-              className="btn btn-primary w-full mt-2"
+              className="btn btn-primary w-full py-2.5"
             >
-              {submitting ? "Logging in..." : "Login"}
+              Login
             </button>
           </form>
 
-          <p className="text-sm text-center text-gray-500">
+          {/* Footer */}
+          <p className="text-sm text-center text-text-muted">
             Don’t have an account?{" "}
-            <Link href="/signup" className="text-[#2874f0] font-medium">
+            <Link
+              href="/signup"
+              className="text-accent font-medium hover:underline"
+            >
               Sign up
             </Link>
           </p>

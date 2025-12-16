@@ -10,27 +10,23 @@ export default function SignupPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [nextPath, setNextPath] = useState("/products");
+  const [submitted, setSubmitted] = useState(false);
 
+  // If user is already logged in, redirect
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setNextPath(params.get("next") || "/products");
-  }, []);
-
-  useEffect(() => {
-    if (!loading && user) router.replace(nextPath);
-  }, [user, loading, router, nextPath]);
+    if (!loading && user) {
+      router.replace("/products");
+    }
+  }, [user, loading, router]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
-    setSubmitting(true);
 
     const { error } = await supabase.auth.signUp({
       email,
@@ -38,54 +34,90 @@ export default function SignupPage() {
       options: {
         data: {
           full_name: name,
-          phone,
         },
       },
     });
-
-    setSubmitting(false);
 
     if (error) {
       setError(error.message);
       return;
     }
 
-    router.replace(nextPath);
+    // ✅ Email sent → show confirmation UI
+    setSubmitted(true);
   }
 
-  if (loading || user) return null;
+  if (loading) return null;
+  if (user) return null;
 
-  return (
-    <div className="min-h-screen flex items-center justify-center auth-bg px-4">
-      <div className="w-full max-w-md">
-        <div className="card p-8 space-y-5">
-          <div className="text-center space-y-1">
-            <h1 className="text-2xl font-semibold text-gray-800">
-              Create your account
+  /* ===============================
+     EMAIL CONFIRMATION SCREEN
+  =============================== */
+  if (submitted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="w-full max-w-md">
+          <div className="bg-surface border border-border rounded-2xl shadow-soft p-8 space-y-6 text-center">
+            <h1 className="text-2xl font-semibold text-text-main">
+              Check your email 📩
             </h1>
-            <p className="text-sm text-gray-500">It takes less than a minute</p>
+
+            <p className="text-sm text-text-muted">
+              We’ve sent a confirmation link to:
+            </p>
+
+            <p className="font-medium text-text-main break-all">{email}</p>
+
+            <p className="text-sm text-text-muted">
+              Click the link in the email to verify your account and start
+              shopping on NeonCart.
+            </p>
+
+            <div className="pt-4">
+              <Link href="/login" className="btn btn-primary w-full py-2.5">
+                Go to Login
+              </Link>
+            </div>
+
+            <p className="text-xs text-text-muted">
+              Didn’t receive the email? Check spam or try again later.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ===============================
+     SIGNUP FORM
+  =============================== */
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        <div className="bg-surface border border-border rounded-2xl shadow-soft p-8 space-y-6">
+          {/* Header */}
+          <div className="text-center space-y-1">
+            <h1 className="text-2xl font-semibold text-text-main">
+              Create account
+            </h1>
+            <p className="text-sm text-text-muted">
+              Join NeonCart and start shopping
+            </p>
           </div>
 
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label mb-1 block">Full name</label>
               <input
+                type="text"
+                required
                 className="input"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your name"
-              />
-            </div>
-
-            <div>
-              <label className="label mb-1 block">Phone</label>
-              <input
-                className="input"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="Phone number"
               />
             </div>
 
@@ -106,6 +138,7 @@ export default function SignupPage() {
               <input
                 type="password"
                 required
+                minLength={6}
                 className="input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -113,17 +146,18 @@ export default function SignupPage() {
               />
             </div>
 
-            <button
-              disabled={submitting}
-              className="btn btn-primary w-full mt-2"
-            >
-              {submitting ? "Creating account..." : "Sign up"}
+            <button className="btn btn-primary w-full py-2.5">
+              Create account
             </button>
           </form>
 
-          <p className="text-sm text-center text-gray-500">
+          {/* Footer */}
+          <p className="text-sm text-center text-text-muted">
             Already have an account?{" "}
-            <Link href="/login" className="text-[#2874f0] font-medium">
+            <Link
+              href="/login"
+              className="text-accent font-medium hover:underline"
+            >
               Login
             </Link>
           </p>

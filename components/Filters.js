@@ -2,14 +2,25 @@
 
 export default function Filters({ filters, setFilters }) {
   return (
-    <div className="card p-4 space-y-5">
-      <h3 className="font-semibold text-gray-800">Filters</h3>
+    <div className="card p-5 space-y-6 bg-[color:var(--surface)]">
+      <h3 className="font-semibold text-[color:var(--text-main)] text-lg">
+        Filters
+      </h3>
 
       {/* Search */}
       <div>
         <label className="label mb-1 block">Search</label>
         <input
-          className="input"
+          className="
+            w-full rounded-lg px-3 py-2
+            bg-[#FFFDF2]
+            border border-[color:var(--border)]
+            text-[color:var(--text-main)]
+            outline-none
+            focus:border-[#748873]
+            focus:ring-2 focus:ring-[#748873]/30
+            transition
+          "
           placeholder="Search products"
           value={filters.search}
           onChange={(e) =>
@@ -30,7 +41,10 @@ export default function Filters({ filters, setFilters }) {
           onChange={(e) =>
             setFilters((f) => ({ ...f, price: Number(e.target.value) }))
           }
-          className="w-full accent-[#2874f0]"
+          className="
+            w-full
+            accent-[#748873]
+          "
         />
       </div>
 
@@ -47,7 +61,10 @@ export default function Filters({ filters, setFilters }) {
           onChange={(e) =>
             setFilters((f) => ({ ...f, rating: Number(e.target.value) }))
           }
-          className="w-full accent-[#2874f0]"
+          className="
+            w-full
+            accent-[#748873]
+          "
         />
       </div>
 
@@ -55,7 +72,16 @@ export default function Filters({ filters, setFilters }) {
       <div>
         <label className="label mb-1 block">Category</label>
         <select
-          className="input"
+          className="
+            w-full rounded-lg px-3 py-2
+            bg-[#FFFDF2]
+            border border-[color:var(--border)]
+            text-[color:var(--text-main)]
+            outline-none
+            focus:border-[#748873]
+            focus:ring-2 focus:ring-[#748873]/30
+            transition
+          "
           value={filters.category}
           onChange={(e) =>
             setFilters((f) => ({ ...f, category: e.target.value }))

@@ -3,23 +3,60 @@ import Image from "next/image";
 
 export default function ProductCard({ product }) {
   return (
-    <Link href={`/products/${product.id}`}>
-      <div className="card p-4 hover:shadow-md transition">
-        <Image
-          src={product.image}
-          alt={product.name}
-          width={400}
-          height={240}
-          className="rounded-lg h-44 w-full object-cover mb-3"
-        />
+    <Link href={`/products/${product.id}`} className="block">
+      <div
+        className="
+          bg-[#EBF4DD]
+          border border-border
+          rounded-[28px]
+          overflow-hidden
+          transition
+          
+          hover:-translate-y-1
+          hover:shadow-xl
+          h-full
+          flex flex-col
+        "
+      >
+        {/* IMAGE — ~75% OF CARD */}
+        <div className="relative w-full aspect-[16/11]">
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          />
+        </div>
 
-        <h3 className="font-medium text-gray-800 truncate">{product.name}</h3>
+        {/* CONTENT — ~25% */}
+        <div className="px-6 py-4 flex flex-col justify-between flex-1">
+          <div>
+            <h3
+              className="
+                text-lg
+                font-medium
+                text-[color:var(--text-main)]
+                truncate
+              "
+            >
+              {product.name}
+            </h3>
 
-        <p className="text-sm text-gray-500">{product.category}</p>
+            <p className="text-sm text-[color:var(--text-muted)] mt-1">
+              {product.category}
+            </p>
+          </div>
 
-        <div className="flex justify-between items-center mt-2">
-          <span className="font-semibold text-[#2874f0]">₹{product.price}</span>
-          <span className="text-sm text-gray-600">⭐ {product.rating}</span>
+          <div className="flex items-center justify-between mt-3">
+            <span className="text-lg font-semibold text-accent">
+              ₹{product.price}
+            </span>
+
+            <span className="text-sm text-[color:var(--text-muted)]">
+              ⭐ {product.rating}
+            </span>
+          </div>
         </div>
       </div>
     </Link>

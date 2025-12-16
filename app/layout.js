@@ -5,18 +5,31 @@ import Footer from "../components/Footer";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 import { CheckoutProvider } from "../context/CheckoutContext";
-import { ThemeProvider } from "../context/ThemeContext"; // ✅ ADD THIS
+import { ThemeProvider } from "../context/ThemeContext";
+
+import { Inter, Playfair_Display } from "next/font/google";
+
+export const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+export const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-playfair",
+});
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${inter.variable} ${playfair.variable}`}>
         <ThemeProvider>
           <AuthProvider>
             <CartProvider>
               <CheckoutProvider>
                 <Header />
-                {children}
+                <main className="py-8">{children}</main>
                 <Footer />
               </CheckoutProvider>
             </CartProvider>
