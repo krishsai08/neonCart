@@ -36,9 +36,8 @@ export default function ConfirmPage() {
     }
   }
 
-  /* ===============================
-     ORDER PLACING LOADER
-  =============================== */
+  //ORDER PLACING LOADER
+
   if (placing) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">

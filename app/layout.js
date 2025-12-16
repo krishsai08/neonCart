@@ -21,6 +21,13 @@ export const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
+export const metadata = {
+  title: {
+    default: "NeonCart – Premium Online Shopping",
+    template: "%s | NeonCart",
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

@@ -17,12 +17,25 @@ export default function AddressPage() {
     phone: "",
   });
 
+  const [error, setError] = useState("");
+
   function update(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError(""); // clear error on change
+  }
+
+  function isValid() {
+    return Object.values(form).every((value) => value.trim() !== "");
   }
 
   function submit(e) {
     e.preventDefault();
+
+    if (!isValid()) {
+      setError("Please fill in all address details");
+      return;
+    }
+
     setAddress(form);
     setStep(2);
     router.push("/checkout/payment");
@@ -32,15 +45,20 @@ export default function AddressPage() {
     <div className="card p-6 max-w-xl mx-auto">
       <h1 className="text-xl font-semibold mb-4">Delivery Address</h1>
 
+      {error && <p className="text-sm text-red-500 mb-3">{error}</p>}
+
       <form onSubmit={submit} className="space-y-4">
         <input
           name="name"
+          value={form.name}
           onChange={update}
           className="input"
           placeholder="Full name"
         />
+
         <input
           name="street"
+          value={form.street}
           onChange={update}
           className="input"
           placeholder="Street address"
@@ -49,12 +67,14 @@ export default function AddressPage() {
         <div className="grid grid-cols-2 gap-3">
           <input
             name="city"
+            value={form.city}
             onChange={update}
             className="input"
             placeholder="City"
           />
           <input
             name="state"
+            value={form.state}
             onChange={update}
             className="input"
             placeholder="State"
@@ -64,12 +84,14 @@ export default function AddressPage() {
         <div className="grid grid-cols-2 gap-3">
           <input
             name="postal"
+            value={form.postal}
             onChange={update}
             className="input"
             placeholder="Postal code"
           />
           <input
             name="phone"
+            value={form.phone}
             onChange={update}
             className="input"
             placeholder="Phone number"
@@ -77,7 +99,16 @@ export default function AddressPage() {
         </div>
 
         <div className="flex justify-end">
-          <button className="btn btn-primary">Continue</button>
+          <button
+            disabled={!isValid()}
+            className="
+              btn btn-primary
+              disabled:opacity-50
+              disabled:cursor-not-allowed
+            "
+          >
+            Continue
+          </button>
         </div>
       </form>
     </div>

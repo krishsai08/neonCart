@@ -15,18 +15,27 @@ export default function SummaryPage() {
     <div className="card p-6 max-w-xl mx-auto space-y-4">
       <h1 className="text-xl font-semibold">Order Summary</h1>
 
+      {/* SHIPPING */}
       <div className="text-sm text-gray-600">
         <b>Shipping</b>
         <p>{address?.name}</p>
         <p>{address?.street}</p>
       </div>
 
-      <div className="text-sm">
-        <b>Payment:</b> Card ending {payment?.card?.number?.slice(-4)}
+      {/* PAYMENT */}
+      <div className="text-sm text-gray-700">
+        <b>Payment:</b>{" "}
+        {payment?.method === "cod" ? (
+          <span>Cash on Delivery</span>
+        ) : (
+          <span>Card ending {payment?.card?.number?.slice(-4)}</span>
+        )}
       </div>
 
+      {/* TOTAL */}
       <div className="font-semibold text-lg">Total: ₹{total}</div>
 
+      {/* ACTIONS */}
       <div className="flex justify-between pt-4">
         <button onClick={() => router.back()} className="btn btn-ghost">
           Back

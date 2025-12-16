@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import Spinner from "@/components/Spinner";
 
-export default function LoginPage() {
+export default function LoginClient() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
@@ -46,18 +46,14 @@ export default function LoginPage() {
       return;
     }
 
-    // success → full page loader will take over
     setRedirecting(true);
   }
 
-  /* ===============================
-     GLOBAL LOADING STATES
-  =============================== */
   if (loading || redirecting) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <Spinner size={42} />
-        <p className="text-sm text-text-muted">Loading products…</p>
+        <p className="text-sm text-text-muted">Loading…</p>
       </div>
     );
   }
@@ -68,7 +64,6 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="bg-surface border border-border rounded-2xl shadow-soft p-8 space-y-6">
-          {/* Header */}
           <div className="text-center space-y-1">
             <h1 className="text-2xl font-semibold text-text-main">
               Welcome back
@@ -80,7 +75,6 @@ export default function LoginPage() {
 
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label mb-1 block">Email</label>
@@ -106,7 +100,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Button – NO SIZE CHANGE */}
             <button
               disabled={submitting}
               className="btn btn-primary w-full py-2.5"
@@ -115,7 +108,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Footer */}
           <p className="text-sm text-center text-text-muted">
             Don’t have an account?{" "}
             <Link

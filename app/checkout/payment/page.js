@@ -23,7 +23,7 @@ export default function PaymentPage() {
   function submit(e) {
     e.preventDefault();
 
-    // basic validation for card
+    // basic validation for card written by regex
     if (method === "card") {
       if (
         !card.name ||

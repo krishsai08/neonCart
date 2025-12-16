@@ -88,14 +88,13 @@ export default function SignupPage() {
     );
   }
 
-  /* ===============================
-     SIGNUP FORM
-  =============================== */
+  //SIGNUP FORM
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="bg-surface border border-border rounded-2xl shadow-soft p-8 space-y-6">
-          {/* Header */}
+          {/* Header COmponnet */}
           <div className="text-center space-y-1">
             <h1 className="text-2xl font-semibold text-text-main">
               Create account
@@ -107,7 +106,6 @@ export default function SignupPage() {
 
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label mb-1 block">Full name</label>
