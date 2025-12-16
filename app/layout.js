@@ -8,6 +8,7 @@ import { CheckoutProvider } from "../context/CheckoutContext";
 import { ThemeProvider } from "../context/ThemeContext";
 
 import { Inter, Playfair_Display } from "next/font/google";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 export const inter = Inter({
   subsets: ["latin"],
@@ -28,9 +29,11 @@ export default function RootLayout({ children }) {
           <AuthProvider>
             <CartProvider>
               <CheckoutProvider>
-                <Header />
-                <main className="py-8">{children}</main>
-                <Footer />
+                <WishlistProvider>
+                  <Header />
+                  <main className="py-8">{children}</main>
+                  <Footer />
+                </WishlistProvider>
               </CheckoutProvider>
             </CartProvider>
           </AuthProvider>

@@ -47,10 +47,12 @@ function ProductsIntro() {
         {/* RIGHT — BIG BRAND TEXT */}
         <div
           className="
+          
             text-right
+            px-4
             font-[var(--font-playfair)]
             text-5xl sm:text-6xl md:text-7xl
-            text-pink-900/20
+            text-pink-900/30
             select-none
             leading-none
           "

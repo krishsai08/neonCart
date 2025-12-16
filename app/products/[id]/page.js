@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getProduct } from "../../../lib/apiProducts";
 import AddToCartButton from "../../../components/AddToCartButton";
+import WishlistButton from "@/components/WishlistButton";
 
 export default async function ProductDetail({ params }) {
   // ✅ unwrap params
@@ -43,7 +44,11 @@ export default async function ProductDetail({ params }) {
           <li>✔ Secure payments</li>
         </ul>
 
-        <AddToCartButton product={product} />
+        <div className="flex items-center gap-3 pt-2">
+          <AddToCartButton product={product} />
+
+          <WishlistButton productId={product.id} />
+        </div>
       </div>
     </div>
   );

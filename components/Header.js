@@ -5,11 +5,13 @@ import { useTheme } from "@/context/ThemeContext";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import UserMenu from "@/components/UserMenu";
+import { useWishlist } from "@/context/WishlistContext";
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
   const { cart } = useCart();
   const { user } = useAuth();
+  const { wishlist } = useWishlist();
 
   return (
     <header className="sticky top-0 z-40 bg-[#748873]">
@@ -50,6 +52,9 @@ export default function Header() {
               >
                 🛒
                 <span className="text-xs">({cart.length})</span>
+              </Link>
+              <Link href="/wishlist" className="text-white text-sm">
+                ❤️ {wishlist?.length}
               </Link>
 
               {/* User dropdown */}

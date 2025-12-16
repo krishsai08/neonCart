@@ -44,7 +44,7 @@ export default function UserPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-pink-50 to-white px-4 py-6">
+      <div className="min-h-screen  px-4 py-6">
         <div className="max-w-xl mx-auto space-y-6">
           {/* PROFILE HERO */}
           <div className="rounded-3xl bg-gradient-to-r from-blue-400 to-pink-300 p-6 text-white shadow-lg">
