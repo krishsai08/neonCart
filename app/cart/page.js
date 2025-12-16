@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "../../context/CartContext";
 import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
@@ -13,8 +14,8 @@ export default function CartPage() {
 
   return (
     <AuthGuard>
-      <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-[1fr_320px] gap-6">
-        {/* Cart Items */}
+      <div className="max-w-6xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-[1fr_320px] gap-6">
+        {/* CART ITEMS */}
         <div className="space-y-4">
           <h1 className="text-2xl font-semibold">Your Cart</h1>
 
@@ -23,20 +24,34 @@ export default function CartPage() {
           )}
 
           {cart.map((item) => (
-            <div key={item.id} className="card p-4 flex gap-4">
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={120}
-                height={90}
-                className="rounded-lg object-cover"
-              />
+            <div
+              key={item.id}
+              className="card p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+            >
+              {/* CLICKABLE PRODUCT PREVIEW */}
+              <Link
+                href={`/products/${item.id}`}
+                className="flex gap-4 flex-1 group"
+              >
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={120}
+                  height={90}
+                  className="rounded-lg object-cover group-hover:opacity-90"
+                />
 
-              <div className="flex-1">
-                <h3 className="font-medium text-gray-800">{item.name}</h3>
-                <p className="text-sm text-gray-500">₹{item.price}</p>
+                <div>
+                  <h3 className="font-medium text-gray-800 group-hover:underline">
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">₹{item.price}</p>
+                </div>
+              </Link>
 
-                <div className="flex items-center gap-3 mt-3">
+              {/* ACTIONS */}
+              <div className="flex flex-row sm:flex-col gap-3 items-center">
+                <div className="flex items-center gap-3">
                   <button
                     onClick={() => dispatch({ type: "DEC", payload: item.id })}
                     className="btn btn-ghost px-3"
@@ -52,26 +67,25 @@ export default function CartPage() {
                   >
                     +
                   </button>
-
-                  <button
-                    onClick={() =>
-                      dispatch({ type: "REMOVE", payload: item.id })
-                    }
-                    className="text-sm text-red-500 ml-4"
-                  >
-                    Remove
-                  </button>
                 </div>
+
+                <button
+                  onClick={() => dispatch({ type: "REMOVE", payload: item.id })}
+                  className="text-sm text-red-500 hover:underline"
+                >
+                  Remove
+                </button>
               </div>
 
-              <div className="font-semibold text-gray-800">
+              {/* PRICE */}
+              <div className="font-semibold text-gray-800 sm:text-right min-w-[80px]">
                 ₹{item.price * item.qty}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Summary */}
+        {/* SUMMARY */}
         <div className="card p-4 h-fit">
           <h2 className="font-semibold mb-4">Price Details</h2>
 
@@ -88,7 +102,11 @@ export default function CartPage() {
           <button
             disabled={cart.length === 0}
             onClick={() => router.push("/checkout/address")}
-            className="btn btn-primary w-full mt-4"
+            className="
+              btn btn-primary w-full mt-4
+              disabled:opacity-50
+              disabled:cursor-not-allowed
+            "
           >
             Proceed to Checkout
           </button>

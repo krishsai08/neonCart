@@ -30,7 +30,7 @@ export default function AddToCartButton({ product }) {
       <div className="flex items-center gap-3 mt-4">
         <button
           onClick={() => dispatch({ type: "DEC", payload: product.id })}
-          className="btn btn-ghost px-3"
+          className="btn bg-emerald-300 btn-ghost px-3"
         >
           −
         </button>
@@ -39,7 +39,7 @@ export default function AddToCartButton({ product }) {
 
         <button
           onClick={() => dispatch({ type: "INC", payload: product.id })}
-          className="btn btn-ghost px-3"
+          className="btn bg-emerald-300 btn-ghost px-3"
         >
           +
         </button>
