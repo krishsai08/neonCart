@@ -72,6 +72,17 @@ export default function UserPage() {
             >
               View My Orders →
             </button>
+            <button
+              onClick={() => router.push("/wishlist")}
+              className="
+                mt-4 w-full min-h-[44px]
+                rounded-xl
+                bg-white text-blue-600
+                text-sm font-medium
+              "
+            >
+              View My Wishlisted Items →
+            </button>
           </div>
 
           {/* INFO CARDS */}
