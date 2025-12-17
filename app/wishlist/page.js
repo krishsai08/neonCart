@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useWishlist } from "@/context/WishlistContext";
 import ProductCard from "@/components/ProductCard";
+import Link from "next/link";
 
 export default function WishlistPage() {
   const { wishlist, loading } = useWishlist();
@@ -36,8 +37,23 @@ export default function WishlistPage() {
 
   if (products.length === 0) {
     return (
-      <div className="p-6 text-center text-gray-500">
-        Your wishlist is empty 💔
+      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center gap-4">
+        <span className="text-5xl">🤍</span>
+
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Your wishlist is empty
+        </h2>
+
+        <p className="text-gray-500">
+          Save items you love and come back later.
+        </p>
+
+        <Link
+          href="/products"
+          className="bg-accent text-white px-6 py-2 rounded"
+        >
+          Explore Products
+        </Link>
       </div>
     );
   }
