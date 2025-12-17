@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ======================================================
-   COLOR TOKENS
-====================================================== */
+/* ------------------ ROOT VARIABLES (LIGHT MODE) ------------------ */
 :root {
   --bg-main: #fcf6d9;
   --bg-accent: #9cc6db;
@@ -17,9 +15,7 @@
 
   --text-main: #2b2b2b;
   --text-muted: #6b6b6b;
-}
 
-:root {
   --font-inter: "Inter", sans-serif;
   --font-playfair: "Playfair Display", serif;
 }
@@ -28,9 +24,7 @@ body {
   font-family: var(--font-inter);
 }
 
-/* ======================================================
-   GLOBAL PAGE BACKGROUND (ALL PAGES)
-====================================================== */
+/* ------------------ BASE STYLES ------------------ */
 @layer base {
   body {
     min-height: 100vh;
@@ -45,9 +39,7 @@ body {
   }
 }
 
-/* ======================================================
-   COMPONENTS
-====================================================== */
+/* ------------------ COMPONENTS ------------------ */
 @layer components {
   .card {
     background-color: var(--surface);
@@ -96,20 +88,24 @@ body {
   }
 }
 
-/* ======================================================
-   DARK MODE (IMPROVED CONTRAST & READABILITY)
-====================================================== */
+/* ------------------ DARK MODE VARIABLES ------------------ */
 .dark {
-  --bg-main: #1c1b17; /* page background */
-  --bg-accent: #24343c; /* soft blue wash */
-  --surface: #2f2e28; /* cards (lighter than bg) */
-  --border: #3f3d35;
+  --bg-main: #1b1a16;
+  --bg-accent: #24343c;
+  --surface: #2e2d27;
+  --border: #45433a;
 
-  --text-main: #f7f5ee; /* primary text */
-  --text-muted: #c8c3b4; /* secondary text */
+  --primary: #9cc6db;
+  --accent: #ff8b4a;
+  --secondary: #e2c48d;
+
+  --text-main: #eeba1f;
+  --text-muted: #b9b4a3;
 }
 
+/* ------------------ DARK MODE BASE ------------------ */
 .dark body {
+  color: var(--text-main);
   background: radial-gradient(
       1200px 600px at 20% -10%,
       rgba(156, 198, 219, 0.22),
@@ -118,13 +114,12 @@ body {
     linear-gradient(180deg, var(--bg-accent) 0%, var(--bg-main) 60%);
 }
 
-/* Cards */
+/* ------------------ DARK MODE FIXES ------------------ */
 .dark .card {
   background-color: var(--surface);
   border-color: var(--border);
 }
 
-/* Inputs */
 .dark .input {
   background-color: #35342e;
   border-color: var(--border);
@@ -135,20 +130,44 @@ body {
   color: #a8a393;
 }
 
-/* Buttons */
 .dark .btn-ghost:hover {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* ======================================================
-   MOBILE-FIRST RESPONSIVE HELPERS (non-invasive)
-   - Mobile-first defaults use CSS variables below
-   - Add classes: `container`, `stack`, `r-grid`, `text-base` ✅
-   - These helpers are additive and won't change existing rules
-====================================================== */
+.dark .btn-primary {
+  background-color: var(--accent);
+  color: #1b1a16;
+}
+
+.dark .btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+/* Headings & links */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5 {
+  color: var(--text-main);
+}
+
+.dark a {
+  color: var(--primary);
+}
+
+.dark a:hover {
+  text-decoration: underline;
+}
+
+/* Muted text utility */
+.text-muted {
+  color: var(--text-muted);
+}
+
+/* ------------------ RESPONSIVE HELPERS ------------------ */
 @layer utilities {
   :root {
-    /* mobile defaults */
     --container-padding: 1rem;
     --container-max-width: 100%;
     --font-size-base: 16px;
@@ -156,7 +175,6 @@ body {
     --grid-gap: 1rem;
   }
 
-  /* Layout helpers */
   .container {
     width: 100%;
     padding-left: var(--container-padding);
@@ -166,14 +184,12 @@ body {
     max-width: var(--container-max-width);
   }
 
-  /* Stack: column on mobile */
   .stack {
     display: flex;
     flex-direction: column;
     gap: var(--stack-gap);
   }
 
-  /* Responsive grid: 1col mobile, expands at breakpoints */
   .r-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -184,7 +200,6 @@ body {
     font-size: var(--font-size-base);
   }
 
-  /* BREAKPOINTS (mobile-first overrides) */
   @media (min-width: 640px) {
     :root {
       --container-padding: 1.25rem;

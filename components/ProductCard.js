@@ -5,13 +5,16 @@ import AddToCartMini from "@/components/AddToCartMini";
 import { useAuth } from "@/context/AuthContext";
 
 export default function ProductCard({ product }) {
-  const { user } = useAuth(); // ✅ check login
+  const { user } = useAuth(); //  check login
 
   return (
     <div className="relative">
       <WishlistButton productId={product.id} />
 
-      <Link href={`/products/${product.id}`} className="block">
+      <Link
+        href={`/products/${product.id}`}
+        className="block text-inherit no-underline"
+      >
         <div
           className="
             bg-[#EBF4DD]
@@ -38,8 +41,12 @@ export default function ProductCard({ product }) {
           {/* CONTENT */}
           <div className="px-6 py-4 flex flex-col justify-between flex-1">
             <div>
-              <h3 className="text-lg font-medium truncate">{product.name}</h3>
-              <p className="text-sm text-muted mt-1">{product.category}</p>
+              <h3 className="text-lg font-medium truncate text-[var(--text-main)]">
+                {product.name}
+              </h3>
+              <p className="text-sm mt-1 text-[var(--text-muted)]">
+                {product.category}
+              </p>
             </div>
 
             <div className="flex items-center justify-between mt-3">
@@ -47,7 +54,7 @@ export default function ProductCard({ product }) {
                 ₹{product.price}
               </span>
 
-              {/* ✅ Only logged-in users see Add to Cart */}
+              {/*Only logged-in users see Add to Cart */}
               {user && <AddToCartMini product={product} />}
             </div>
           </div>
