@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛒 NeonCart
 
-## Getting Started
+NeonCart is a modern e-commerce web application built using **Next.js (App Router)** and **Supabase**.
+It implements a complete shopping flow including product browsing, cart management, checkout, and order history.
 
-First, run the development server:
+This project focuses on real-world patterns such as authentication, Row Level Security (RLS), and clean state management.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 🔐 Authentication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Email & password authentication using Supabase
+- Protected routes (cart, checkout, orders, wishlist)
+- Logged-in users cannot access login or signup pages
+- Session-aware UI using React Context
 
-## Learn More
+### 🛍️ Products
 
-To learn more about Next.js, take a look at the following resources:
+- Product listing page with responsive cards
+- Individual product detail pages
+- Wishlist support
+- Add to cart from product cards and product detail pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🛒 Cart
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Add and remove items
+- Increase or decrease quantity
+- Real-time price calculation
+- Empty cart state handled properly
 
-## Deploy on Vercel
+### ❤️ Wishlist
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Add or remove products
+- Wishlist page with saved products
+- Clean empty wishlist UI
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🚚 Checkout Flow
+
+Three-step checkout process:
+
+1. Address
+2. Order summary
+3. Confirm order
+
+- Step-based navigation using context
+- Users cannot skip steps
+- Clear price breakdown before placing the order
+
+### 💰 Pricing Logic
+
+- Subtotal calculation
+- Tax calculation
+- Discount and coupon support
+- Final payable amount stored securely in the database
+
+### 📦 Orders
+
+- Place orders securely
+- View list of previous orders
+- Order detail page with purchased items and price breakdown
+- Orders are user-specific using Supabase RLS
+
+---
+
+## 🧭 Routes
+
+Public Routes:
+/
+/products
+/products/[id]
+/login
+/signup
+
+Protected Routes:
+/cart
+/checkout/address
+/checkout/confirm
+/orders
+/orders/[id]
+/wishlist
+
+---
+
+## 🧱 Tech Stack
+
+- Next.js 14 (App Router)
+- React
+- Supabase (Auth, Database, RLS)
+- Tailwind CSS
+- Context API
+
+---
+
+## 🗄️ Database Structure
+
+Orders:
+
+- id
+- user_id
+- subtotal_amount
+- tax_amount
+- discount_amount
+- coupon_discount
+- coupon_code
+- final_amount
+- status
+- created_at
+
+Order Items:
+
+- id
+- order_id
+- product_id
+- name
+- price
+- quantity
+
+---
+
+## 🔐 Security
+
+- RLS enabled on all user-related tables
+- Frontend does not manually filter by user_id
+- Supabase handles authorization using auth.uid()
+
+---
+
+## 🚀 Getting Started
+
+1. Clone repository
+   git clone https://github.com/your-username/neoncart.git
+
+2. Install dependencies
+   npm install
+
+3. Environment variables (.env.local)
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+4. Run app
+   npm run dev
+
+---
+
+## 👨‍💻 Author
+
+Built by Krishna
