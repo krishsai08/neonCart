@@ -1,4 +1,4 @@
-# 🛒 NeonCart
+# NeonCart
 
 NeonCart is a modern e-commerce web application built using **Next.js (App Router)** and **Supabase**.
 It implements a complete shopping flow including product browsing, cart management, checkout, and order history.
@@ -7,36 +7,36 @@ This project focuses on real-world patterns such as authentication, Row Level Se
 
 ---
 
-## ✨ Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 
 - Email & password authentication using Supabase
 - Protected routes (cart, checkout, orders, wishlist)
 - Logged-in users cannot access login or signup pages
 - Session-aware UI using React Context
 
-### 🛍️ Products
+### Products
 
 - Product listing page with responsive cards
 - Individual product detail pages
 - Wishlist support
 - Add to cart from product cards and product detail pages
 
-### 🛒 Cart
+### Cart
 
 - Add and remove items
 - Increase or decrease quantity
 - Real-time price calculation
 - Empty cart state handled properly
 
-### ❤️ Wishlist
+### Wishlist
 
 - Add or remove products
 - Wishlist page with saved products
 - Clean empty wishlist UI
 
-### 🚚 Checkout Flow
+### Checkout Flow
 
 Three-step checkout process:
 
@@ -48,14 +48,14 @@ Three-step checkout process:
 - Users cannot skip steps
 - Clear price breakdown before placing the order
 
-### 💰 Pricing Logic
+### Pricing Logic
 
 - Subtotal calculation
 - Tax calculation
 - Discount and coupon support
 - Final payable amount stored securely in the database
 
-### 📦 Orders
+### Orders
 
 - Place orders securely
 - View list of previous orders
@@ -64,7 +64,7 @@ Three-step checkout process:
 
 ---
 
-## 🧭 Routes
+## Routes
 
 Public Routes:
 /
@@ -83,7 +83,7 @@ Protected Routes:
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 - Next.js 14 (App Router)
 - React
@@ -93,7 +93,7 @@ Protected Routes:
 
 ---
 
-## 🗄️ Database Structure
+## Database Structure
 
 Orders:
 
@@ -119,28 +119,11 @@ Order Items:
 
 ---
 
-## 🔐 Security
+## Security
 
 - RLS enabled on all user-related tables
 - Frontend does not manually filter by user_id
 - Supabase handles authorization using auth.uid()
-
----
-
-## 🚀 Getting Started
-
-1. Clone repository
-   git clone https://github.com/your-username/neoncart.git
-
-2. Install dependencies
-   npm install
-
-3. Environment variables (.env.local)
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-4. Run app
-   npm run dev
 
 ---
 
