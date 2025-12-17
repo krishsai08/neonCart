@@ -7,6 +7,16 @@ import { useAuth } from "@/context/AuthContext";
 import UserMenu from "@/components/UserMenu";
 import { useWishlist } from "@/context/WishlistContext";
 
+// Header component with theme toggle, cart, wishlist, and user menu
+// Features:
+//  Theme toggle button (light/dark)
+//  Cart link with item count
+//  Wishlist link with item count
+//  User menu for logged-in users
+//  Login button for guests
+//  Responsive layout with Tailwind CSS classes
+//  Uses useTheme, useCart, useAuth, and useWishlist contexts for state management
+
 export default function Header() {
   const { theme, setTheme } = useTheme();
   const { cart } = useCart();
@@ -16,7 +26,6 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 bg-[#748873]">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-        {/* Brand */}
         <Link
           href="/products"
           className="
@@ -28,9 +37,7 @@ export default function Header() {
           NeonCart
         </Link>
 
-        {/* Right actions */}
         <div className="flex items-center gap-3">
-          {/* Theme toggle */}
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             className="
@@ -45,7 +52,6 @@ export default function Header() {
 
           {user ? (
             <>
-              {/* Cart */}
               <Link
                 href="/cart"
                 className="text-white  text-xl flex items-center gap-1"
@@ -57,7 +63,6 @@ export default function Header() {
                 ❤️ {wishlist?.length}
               </Link>
 
-              {/* User dropdown */}
               <UserMenu />
             </>
           ) : (

@@ -1,5 +1,9 @@
 "use client";
 
+//signup component with name,email and password fields
+//after signing up redirects to /products page
+//wont be accessed if the user is already logged in.
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -43,16 +47,12 @@ export default function SignupPage() {
       return;
     }
 
-    // ✅ Email sent → show confirmation UI
     setSubmitted(true);
   }
 
   if (loading) return null;
   if (user) return null;
 
-  /* ===============================
-     EMAIL CONFIRMATION SCREEN
-  =============================== */
   if (submitted) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">

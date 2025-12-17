@@ -7,6 +7,18 @@ import { useRouter } from "next/navigation";
 import AuthGuard from "@/components/AuthGuard";
 import Link from "next/link";
 
+// UserPage component for displaying and updating user profile
+// Features:
+//  Displays user info (name, email, auth provider, join date)
+//  Allows updating name and phone number
+//  Shows recent order and wishlist item
+//  Protected with AuthGuard to ensure only logged-in users can access
+// Fetches additional data (orders, wishlist) from Supabase
+// Manages loading and saving states
+// Uses useAuth context for user info and authentication state
+// Uses Supabase client for data fetching and updating
+// Responsive layout with Tailwind CSS classes
+
 export default function UserPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -69,9 +81,7 @@ export default function UserPage() {
     <AuthGuard>
       <div className="min-h-screen px-4 py-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10">
-          {/* LEFT */}
           <div className="space-y-10">
-            {/* PROFILE HEADER */}
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full border flex items-center justify-center text-2xl font-semibold">
                 {initial}
@@ -84,7 +94,6 @@ export default function UserPage() {
               </div>
             </div>
 
-            {/* INFO */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <InfoCard
                 label="Auth Provider"
@@ -96,7 +105,6 @@ export default function UserPage() {
               />
             </div>
 
-            {/* UPDATE PROFILE */}
             <div className="space-y-4">
               <h2 className="text-lg font-semibold">Update Profile</h2>
 
@@ -126,9 +134,7 @@ export default function UserPage() {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className="space-y-8">
-            {/* ORDERS */}
             <FloatingCard>
               <h3 className="font-semibold mb-2">Recent Order</h3>
 
@@ -149,7 +155,6 @@ export default function UserPage() {
               </Link>
             </FloatingCard>
 
-            {/* WISHLIST */}
             <FloatingCard>
               <h3 className="font-semibold mb-2">Wishlist</h3>
 

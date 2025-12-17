@@ -1,5 +1,13 @@
 "use client";
 
+// CartContext to manage shopping cart state
+// Features:
+//  Provides cart items and dispatch function
+//  Reducer handles ADD, INC, DEC, REMOVE actions
+//  useCart hook for easy access to cart context
+//  Ensures proper usage within CartProvider
+//  Initial cart state is an empty array
+
 import { createContext, useContext, useReducer } from "react";
 
 const CartContext = createContext();

@@ -1,5 +1,13 @@
 "use client";
 
+//final confirmation page during checkout process
+//displays order summary with subtotal, tax, total
+//on confirming order, creates order via createOrder API function
+//clears cart and navigates to /orders page
+//shows loading spinner while order is being placed
+//uses useCart, useCheckout, and useAuth contexts
+//handles placing state to prevent duplicate orders
+
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useCheckout } from "@/context/CheckoutContext";

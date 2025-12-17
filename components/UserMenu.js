@@ -1,5 +1,16 @@
 "use client";
 
+// UserMenu component
+// Displays user initials and a dropdown menu with account options
+// Features:
+//  User initials display
+//  Dropdown menu with account links
+//  Logout functionality
+//  Closes menu when clicking outside
+//  Uses useAuth context for user info
+//  Styled with Tailwind CSS classes
+//  Responsive and user-friendly UI/UX
+
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
@@ -29,7 +40,6 @@ export default function UserMenu() {
 
   return (
     <div className="relative" ref={ref}>
-      {/* Avatar */}
       <button
         onClick={() => setOpen(!open)}
         className="
@@ -42,7 +52,6 @@ export default function UserMenu() {
         {initial}
       </button>
 
-      {/* Dropdown */}
       {open && (
         <div
           className="

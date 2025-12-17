@@ -2,13 +2,20 @@
 
 import { useWishlist } from "@/context/WishlistContext";
 
+// WishlistButton component to toggle product wishlist status
+// Features:
+//  Heart icon button (filled if wishlisted, outlined if not)
+//  Uses useWishlist context for wishlist state management
+//  Prevents event propagation to avoid triggering parent click handlers
+//  Styled with Tailwind CSS classes
+
 export default function WishlistButton({ productId }) {
   const { isWishlisted, toggleWishlist } = useWishlist();
   const active = isWishlisted(productId);
 
   function handleClick(e) {
-    e.preventDefault(); // ⛔ stop Link navigation
-    e.stopPropagation(); // ⛔ stop bubbling
+    e.preventDefault();
+    e.stopPropagation();
     toggleWishlist(productId);
   }
 

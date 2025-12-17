@@ -1,5 +1,13 @@
 "use client";
 
+// AuthContext to manage user authentication state using Supabase
+// Features:
+//  Provides user object and loading state
+//  Listens to auth state changes via Supabase
+//  useAuth hook for easy access to auth context
+//  Ensures proper usage within AuthProvider
+//  Handles initial session retrieval on mount
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
@@ -10,13 +18,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load session on app start
     supabase.auth.getSession().then(({ data }) => {
       setUser(data?.session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen to login / logout
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {

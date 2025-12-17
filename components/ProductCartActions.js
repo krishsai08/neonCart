@@ -3,6 +3,14 @@
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
 
+// ProductCartActions component
+// Manages adding products to cart and adjusting quantities
+// Features:
+//  "Add to Cart" button for products not in cart
+//  Quantity controls (+, -) for products in cart
+//  "Remove" button to delete product from cart
+//  Uses useCart context for cart state management
+
 export default function ProductCartActions({ product }) {
   const { cart, dispatch } = useCart();
   const item = cart.find((c) => c.id === product.id);

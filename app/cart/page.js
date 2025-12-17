@@ -1,5 +1,28 @@
 "use client";
 
+
+/*CartPage
+// Handles the shopping cart UI and pricing before checkout.
+//
+// Features:
+//  Displays cart items with quantity controls
+  Supports coupon-based discounts (NEON10, NEON20)
+  Calculates subtotal, tax (18%), discount, and final total
+  Shows an empty-cart state when no items are present
+ 
+  Pricing:
+  Total = Subtotal + Tax − Discount
+ 
+  Security & Navigation:
+  Protected using AuthGuard
+   Redirects users to /checkout/address on checkout
+ 
+  State:
+  Cart managed via CartContext
+ Coupon and discount handled locally
+ */
+
+
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";

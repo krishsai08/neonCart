@@ -1,5 +1,15 @@
 "use client";
 
+// WishlistContext to manage user wishlist state using Supabase
+// Features:
+//  Provides wishlist items and functions to toggle wishlist status
+//  Fetches wishlist from Supabase on user change
+//  useWishlist hook for easy access to wishlist context
+//  Ensures proper usage within WishlistProvider
+//  Handles adding/removing items from wishlist in Supabase
+//  Initial wishlist state is an empty array
+//  Loading state while fetching wishlist
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
@@ -35,7 +45,6 @@ export function WishlistProvider({ children }) {
 
     const isWishlisted = wishlist.includes(productId);
 
-    // Optimistic UI
     setWishlist((prev) =>
       isWishlisted
         ? prev.filter((id) => id !== productId)

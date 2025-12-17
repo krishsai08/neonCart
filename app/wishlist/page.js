@@ -1,5 +1,17 @@
 "use client";
 
+// Wishlist Page - Displays products added to the wishlist
+// Features:
+//  Fetches wishlist product IDs from WishlistContext
+//  Retrieves product details from Supabase based on wishlist IDs
+//  Shows empty state when no products are wishlisted
+//  Displays products in a responsive grid using ProductCard component
+//  Manages loading states for wishlist and product fetching
+// Uses Tailwind CSS for styling
+// Utilizes useEffect for data fetching on wishlist changes
+// Uses useState for managing products and fetching state
+// Supabase client for database interactions
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useWishlist } from "@/context/WishlistContext";

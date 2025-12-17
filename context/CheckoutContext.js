@@ -1,5 +1,12 @@
 "use client";
 
+// CheckoutContext to manage checkout process state
+// Features:
+//  Manages current checkout step, address, and payment info
+//  useCheckout hook for easy access to checkout context
+//  Ensures proper usage within CheckoutProvider
+//  Initial states for step, address, and payment
+
 import { createContext, useContext, useState } from "react";
 
 const CheckoutContext = createContext();

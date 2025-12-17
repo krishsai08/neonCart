@@ -1,5 +1,9 @@
 "use client";
 
+//login form component. it is client component and contains two input fields which redirects to products page when the user give correct fields.
+//it wont be shown if the user is already logged in
+//redirects to /products
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -61,6 +65,7 @@ export default function LoginClient() {
   if (user) return null;
 
   return (
+    //login form
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="bg-surface border border-border rounded-2xl shadow-soft p-8 space-y-6">

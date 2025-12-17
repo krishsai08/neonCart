@@ -1,5 +1,17 @@
 "use client";
 
+//orders page that displays user's past orders
+//fetches orders from supabase on component mount
+//shows loading state while fetching
+//if not logged in, prompts user to login
+//if no orders, shows message indicating no orders placed yet
+//displays each order with date, status, items, and total amount
+//uses OrderCard and StatusBadge components for display
+//handles different order statuses with colored badges
+//links each order to its detailed view page
+//uses useAuth context to get current user
+//uses supabase client for data fetching
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
@@ -78,7 +90,7 @@ export default function OrdersPage() {
   );
 }
 
-/* ---------------- COMPONENTS ---------------- */
+//components
 
 function OrderCard({ order }) {
   return (

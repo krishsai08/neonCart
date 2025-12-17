@@ -3,8 +3,21 @@ import ProductsIntro from "./ProductsIntro";
 import ProductsClient from "./ProductsClient";
 import { getProductsPage } from "@/lib/apiProducts";
 
+//page to display list of products with infinite scroll
+//fetches initial products on server side
+//uses ProductsClient component for infinite scroll functionality
+//displays loading placeholders while fetching
+//includes ProductsIntro component at the top
+//uses getProductsPage API function to fetch products
+//arranges products in a responsive grid layout
+//applies padding and max width for better presentation
+//ensures good user experience with loading states
+//optimizes for performance with server-side rendering of initial data
+//and client-side fetching for more products
+//enhances SEO with server-side rendering
+//provides a visually appealing layout for product browsing
+
 export default async function ProductsPage() {
-  // 👇 Server fetch for instant render
   const initialProducts = await getProductsPage({ page: 0 });
 
   return (

@@ -1,5 +1,13 @@
 "use client";
 
+// ThemeContext to manage light/dark theme state
+// Features:
+//  Provides current theme and function to toggle it
+//  Updates document class on theme change
+//  useTheme hook for easy access to theme context
+//  Ensures proper usage within ThemeProvider
+//  Initial theme is set to "light"
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext(null);

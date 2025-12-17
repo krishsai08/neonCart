@@ -1,5 +1,13 @@
 "use client";
 
+//order detail page showing order info and items
+//fetches order details from supabase using order id from URL params
+//displays order items, pricing breakdown, and total paid
+//handles loading states and user authentication
+//shows message if order not found or user not logged in
+//uses useAuth context to get current user
+//uses supabase client from lib/supabase
+
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -77,7 +85,6 @@ export default function OrderDetail() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      {/* HEADER */}
       <div>
         <h1 className="text-2xl font-semibold">
           Order #{order.id.slice(0, 8)}
@@ -87,7 +94,6 @@ export default function OrderDetail() {
         </p>
       </div>
 
-      {/* ORDER ITEMS */}
       <div className="rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
         <h2 className="font-semibold mb-2">Items</h2>
 
@@ -109,7 +115,6 @@ export default function OrderDetail() {
         ))}
       </div>
 
-      {/* PRICE BREAKDOWN */}
       <div className="rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
         <h2 className="font-semibold mb-2">Price Details</h2>
 
@@ -143,7 +148,6 @@ export default function OrderDetail() {
         </div>
       </div>
 
-      {/* ACTION */}
       <div>
         <Link href="/orders" className="text-sm text-primary hover:underline">
           ← Back to orders

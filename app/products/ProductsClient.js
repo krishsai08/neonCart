@@ -1,5 +1,21 @@
 "use client";
 
+//products listing page with filters and infinite scroll
+//uses getProductsPage from lib/apiProducts to fetch products
+//displays ProductCard for each product
+//uses Filters component for filtering
+//uses useInfiniteScroll hook to load more products when scrolling
+//manages filters and pagination state
+//shows loading spinner when fetching more products
+//deduplicates products when loading more
+//applies filters on the client side
+//initial products are passed as props
+//layout and styling with CSS grid
+//divides page into sidebar for filters and main section for products
+//responsive design with grid layout
+//uses useState and useRef hooks
+//handles loading and hasMore state for infinite scroll
+
 import { useEffect, useRef, useState } from "react";
 import Filters from "@/components/Filters";
 import ProductCard from "@/components/ProductCard";
@@ -56,12 +72,10 @@ export default function ProductsClient({ initialProducts }) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 items-start">
-      {/* FILTERS */}
       <aside className=" top-24">
         <Filters filters={filters} setFilters={setFilters} />
       </aside>
 
-      {/* PRODUCTS */}
       <section>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {filtered.map((p) => (

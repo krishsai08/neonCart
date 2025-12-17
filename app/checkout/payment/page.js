@@ -1,5 +1,13 @@
 "use client";
 
+//payment method selection page during checkout process
+//allows user to select between card payment and cash on delivery
+//if card payment is selected, collects basic card details with validation
+//on submitting valid details, saves payment info in checkout context and navigates to /checkout/summary
+//uses useCheckout context to set payment and step
+//basic validation for card details is done using regex
+//if validation fails, shows alert message
+
 import { useCheckout } from "../../../context/CheckoutContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -50,7 +58,6 @@ export default function PaymentPage() {
       <h1 className="text-xl font-semibold mb-4">Payment Method</h1>
 
       <form onSubmit={submit} className="space-y-5">
-        {/* CARD OPTION */}
         <label className="flex gap-2 items-center">
           <input
             type="radio"
@@ -96,7 +103,6 @@ export default function PaymentPage() {
           </div>
         )}
 
-        {/* COD OPTION */}
         <label className="flex gap-2 items-center">
           <input
             type="radio"
@@ -107,7 +113,6 @@ export default function PaymentPage() {
           Cash on Delivery
         </label>
 
-        {/* NAVIGATION */}
         <div className="flex justify-between pt-4">
           <button
             type="button"

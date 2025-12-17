@@ -1,5 +1,12 @@
 "use client";
 
+//summary page during checkout process
+//displays shipping address, payment method, and total amount
+//allows user to go back to payment or place the order
+//on placing order, navigates to /checkout/confirm after setting step in checkout context
+//uses useCheckout and useCart contexts
+//calculates total from cart items
+
 import { useCheckout } from "../../../context/CheckoutContext";
 import { useCart } from "../../../context/CartContext";
 import { useRouter } from "next/navigation";
@@ -15,14 +22,12 @@ export default function SummaryPage() {
     <div className="card p-6 max-w-xl mx-auto space-y-4">
       <h1 className="text-xl font-semibold">Order Summary</h1>
 
-      {/* SHIPPING */}
       <div className="text-sm text-gray-600">
         <b>Shipping</b>
         <p>{address?.name}</p>
         <p>{address?.street}</p>
       </div>
 
-      {/* PAYMENT */}
       <div className="text-sm text-gray-700">
         <b>Payment:</b>{" "}
         {payment?.method === "cod" ? (
@@ -32,10 +37,8 @@ export default function SummaryPage() {
         )}
       </div>
 
-      {/* TOTAL */}
       <div className="font-semibold text-lg">Total: ₹{total}</div>
 
-      {/* ACTIONS */}
       <div className="flex justify-between pt-4">
         <button onClick={() => router.back()} className="btn btn-ghost">
           Back

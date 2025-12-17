@@ -1,5 +1,10 @@
 "use client";
 
+//asks the user to enter delivery address details during checkout process
+//on submitting valid details, saves the address in checkout context and navigates to /checkout/payment
+//validates that all fields are filled before allowing submission
+//uses useCheckout context to set address and step
+
 import { useState } from "react";
 import { useCheckout } from "../../../context/CheckoutContext";
 import { useRouter } from "next/navigation";
@@ -21,7 +26,7 @@ export default function AddressPage() {
 
   function update(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError(""); // clear error on change
+    setError("");
   }
 
   function isValid() {

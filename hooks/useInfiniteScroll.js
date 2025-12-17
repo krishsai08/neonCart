@@ -1,5 +1,12 @@
 import { useEffect } from "react";
 
+// Hook to implement infinite scroll functionality
+// Features:
+//  Uses IntersectionObserver to detect when a target element is in view
+//  Calls onLoadMore callback when the element is visible
+//  Accepts a ref to the target element and the callback function
+//  Cleans up the observer on unmount
+
 export default function useInfiniteScroll(ref, onLoadMore) {
   useEffect(() => {
     if (!ref.current) return;
@@ -11,7 +18,7 @@ export default function useInfiniteScroll(ref, onLoadMore) {
         }
       },
       {
-        rootMargin: "200px", // load a bit earlier
+        rootMargin: "200px",
       }
     );
 

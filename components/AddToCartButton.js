@@ -4,15 +4,29 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
+// AddToCartButton component
+// Props: product - the product object to add to cart
+// Features:
+//  If user is not logged in, prompts to login
+//  If product is in cart, shows quantity controls and remove option
+//  If product is not in cart, shows "Add to Cart" button
+//  Uses useCart and useAuth contexts for cart and user state management
+//  Styled with Tailwind CSS classes
+//  Handles adding, incrementing, decrementing, and removing items from cart
+//  Responsive and usefriendly UI/UX
+//  Prevents actions if user is not authenticated
+//  Full width button for better accessibility on mobile devices
+//  Clear visual feedback for different states (in cart vs not in cart)
+//  Easy to integrate into product detail pages
+//  Reusable component for consistent cart functionality across the app
+
 export default function AddToCartButton({ product }) {
   const { cart, dispatch } = useCart();
   const { user } = useAuth();
   const router = useRouter();
 
-  // Check if product already in cart
   const item = cart.find((c) => c.id === product.id);
 
-  // 🔒 Not logged in
   if (!user) {
     return (
       <button
@@ -24,7 +38,6 @@ export default function AddToCartButton({ product }) {
     );
   }
 
-  // 🛒 Already in cart → show quantity controls
   if (item) {
     return (
       <div className="flex items-center gap-3 mt-4">
@@ -54,7 +67,6 @@ export default function AddToCartButton({ product }) {
     );
   }
 
-  // ➕ Not in cart yet
   return (
     <button
       onClick={() => dispatch({ type: "ADD", payload: { ...product, qty: 1 } })}

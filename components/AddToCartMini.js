@@ -2,11 +2,23 @@
 
 import { useCart } from "@/context/CartContext";
 
+// Mini Add to Cart component for product listings
+// Props: product - the product object to add to cart
+// Features:
+//  If product is not in cart, shows "+ Cart" button
+//  If product is in cart, shows quantity controls and remove option
+//  Uses useCart context for cart state management
+//  Styled with Tailwind CSS classes
+//  Handles adding, incrementing, decrementing, and removing items from cart
+//  Prevents event propagation to avoid unwanted navigation when used inside links
+//  Compact design suitable for product listing pages
+//  Clear visual feedback for different states (in cart vs not in cart)
+//  Easy to integrate into product listing components
+
 export default function AddToCartMini({ product }) {
   const { cart, dispatch } = useCart();
   const item = cart.find((i) => i.id === product.id);
 
-  // 🟢 NOT IN CART
   if (!item) {
     return (
       <button
@@ -22,7 +34,6 @@ export default function AddToCartMini({ product }) {
     );
   }
 
-  // 🟢 IN CART → SHOW MINI CONTROLS
   return (
     <div
       onClick={(e) => {

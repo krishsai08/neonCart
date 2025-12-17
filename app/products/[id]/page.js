@@ -3,8 +3,12 @@ import { getProduct } from "../../../lib/apiProducts";
 import AddToCartButton from "../../../components/AddToCartButton";
 import WishlistButton from "@/components/WishlistButton";
 
+// Product Detail Page
+// Fetches product data based on ID and displays detailed information
+// Includes Add to Cart and Wishlist functionalities
+// Uses server-side rendering for SEO benefits
+
 export default async function ProductDetail({ params }) {
-  // ✅ unwrap params
   const { id } = await params;
 
   const product = await getProduct(id);
@@ -12,7 +16,6 @@ export default async function ProductDetail({ params }) {
 
   return (
     <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10">
-      {/* Image */}
       <div className="card p-4">
         <Image
           src={product.image}
@@ -23,7 +26,6 @@ export default async function ProductDetail({ params }) {
         />
       </div>
 
-      {/* Details */}
       <div className="space-y-4">
         <h1 className="text-2xl font-semibold text-gray-800">{product.name}</h1>
 

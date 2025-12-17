@@ -1,5 +1,10 @@
 "use client";
 
+// Filters component to filter products by search, price, rating, and category
+// Props:
+//  filters: current filter values
+//  setFilters: function to update filter values
+
 export default function Filters({ filters, setFilters }) {
   return (
     <div className="card p-5 space-y-6 bg-[color:var(--surface)]">
@@ -7,7 +12,6 @@ export default function Filters({ filters, setFilters }) {
         Filters
       </h3>
 
-      {/* Search */}
       <div>
         <label className="label mb-1 block">Search</label>
         <input
@@ -29,7 +33,6 @@ export default function Filters({ filters, setFilters }) {
         />
       </div>
 
-      {/* Price */}
       <div>
         <label className="label mb-1 block">Max Price: ₹{filters.price}</label>
         <input
@@ -48,7 +51,6 @@ export default function Filters({ filters, setFilters }) {
         />
       </div>
 
-      {/* Rating */}
       <div>
         <label className="label mb-1 block">
           Minimum Rating: {filters.rating}★
@@ -68,7 +70,6 @@ export default function Filters({ filters, setFilters }) {
         />
       </div>
 
-      {/* Category */}
       <div>
         <label className="label mb-1 block">Category</label>
         <select
