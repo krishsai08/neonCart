@@ -5,12 +5,42 @@ import Link from "next/link";
 import { useCart } from "../../context/CartContext";
 import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
+import { useState } from "react";
 
 export default function CartPage() {
   const { cart, dispatch } = useCart();
   const router = useRouter();
 
-  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  //const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  // inside CartPage component (above return)
+  const TAX_RATE = 0.18;
+
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const tax = Math.round(subtotal * TAX_RATE);
+
+  const [coupon, setCoupon] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [couponError, setCouponError] = useState("");
+
+  const total = subtotal + tax - discount;
+
+  function applyCoupon() {
+    setCouponError("");
+    setDiscount(0);
+
+    if (coupon === "NEON10") {
+      setDiscount(Math.round(subtotal * 0.1));
+    } else if (coupon === "NEON20") {
+      if (subtotal >= 1000) {
+        setDiscount(Math.round(subtotal * 0.2));
+      } else {
+        setCouponError("Minimum cart value ₹1000 required");
+      }
+    } else {
+      setCouponError("Invalid coupon code");
+    }
+  }
 
   return (
     <AuthGuard>
@@ -111,16 +141,48 @@ export default function CartPage() {
             <h2 className="font-semibold mb-4">Price Details</h2>
 
             <div className="flex justify-between text-sm mb-2">
-              <span>Total items</span>
-              <span>{cart.length}</span>
+              <span>Subtotal</span>
+              <span>₹{subtotal}</span>
             </div>
 
-            <div className="flex justify-between font-semibold text-lg border-t pt-3">
-              <span>Total</span>
+            <div className="flex justify-between text-sm mb-2">
+              <span>Tax (18%)</span>
+              <span>₹{tax}</span>
+            </div>
+
+            {discount > 0 && (
+              <div className="flex justify-between text-sm mb-2 text-green-600">
+                <span>Discount</span>
+                <span>- ₹{discount}</span>
+              </div>
+            )}
+
+            {/* COUPON */}
+            <div className="mt-4">
+              <div className="flex gap-2">
+                <input
+                  value={coupon}
+                  onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+                  placeholder="Coupon code"
+                  className="flex-1 border rounded px-3 py-2 text-sm"
+                />
+                <button onClick={applyCoupon} className="btn btn-ghost px-4">
+                  Apply
+                </button>
+              </div>
+
+              {couponError && (
+                <p className="text-xs text-red-500 mt-1">{couponError}</p>
+              )}
+            </div>
+
+            <div className="flex justify-between font-semibold text-lg border-t pt-3 mt-4">
+              <span>Total Payable</span>
               <span>₹{total}</span>
             </div>
 
             <button
+              disabled={cart.length === 0}
               onClick={() => router.push("/checkout/address")}
               className="btn btn-primary w-full mt-4"
             >
