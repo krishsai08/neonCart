@@ -11,9 +11,11 @@ export default function OrdersPage() {
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
+    if (loading) return;
+
     if (user) fetchOrders();
     else setFetching(false);
-  }, [user]);
+  }, [loading, user]);
 
   async function fetchOrders() {
     setFetching(true);
@@ -23,7 +25,7 @@ export default function OrdersPage() {
       .select(
         `
         id,
-        total_amount,
+        final_amount,
         status,
         created_at,
         order_items (
@@ -34,10 +36,14 @@ export default function OrdersPage() {
         )
       `
       )
-      .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
-    if (!error) setOrders(data || []);
+    if (error) {
+      console.error("FETCH ORDERS ERROR:", error);
+    } else {
+      setOrders(data || []);
+    }
+
     setFetching(false);
   }
 
@@ -76,43 +82,26 @@ export default function OrdersPage() {
 
 function OrderCard({ order }) {
   return (
-    <div
-      className="
-        rounded-2xl bg-white border border-gray-200 p-4 space-y-3
-        transition
-        hover:shadow-md
-        hover:border-gray-300
-        active:scale-[0.99]
-      "
-    >
-      {/* HEADER */}
+    <div className="rounded-2xl bg-white border border-gray-200 p-4 space-y-3 hover:shadow-md">
       <div className="flex justify-between text-sm text-gray-500">
         <span>{new Date(order.created_at).toDateString()}</span>
         <StatusBadge status={order.status} />
       </div>
 
-      {/* ITEMS (PREVIEW) */}
       <div className="space-y-2">
         {order.order_items.slice(0, 2).map((item) => (
           <div key={item.id} className="flex justify-between text-sm">
-            <span className="truncate">
+            <span>
               {item.name} × {item.quantity}
             </span>
             <span>₹{item.price * item.quantity}</span>
           </div>
         ))}
-
-        {order.order_items.length > 2 && (
-          <p className="text-xs text-gray-400">
-            +{order.order_items.length - 2} more item(s)
-          </p>
-        )}
       </div>
 
-      {/* FOOTER */}
-      <div className="flex justify-between items-center font-semibold border-t pt-2">
+      <div className="flex justify-between font-semibold border-t pt-2">
         <span>Total</span>
-        <span>₹{order.total_amount}</span>
+        <span>₹{order.final_amount}</span>
       </div>
 
       <p className="text-xs text-blue-600 font-medium">View order details →</p>
@@ -129,12 +118,7 @@ function StatusBadge({ status }) {
   };
 
   return (
-    <span
-      className={`
-        px-2 py-0.5 rounded text-xs capitalize
-        ${styles[status] || "bg-gray-100 text-gray-600"}
-      `}
-    >
+    <span className={`px-2 py-0.5 rounded text-xs ${styles[status]}`}>
       {status}
     </span>
   );

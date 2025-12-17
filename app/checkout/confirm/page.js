@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCart } from "../../../context/CartContext";
-import { useCheckout } from "../../../context/CheckoutContext";
-import { createOrder } from "../../../lib/apiOrders";
-import { useAuth } from "../../../context/AuthContext";
+import { useCart } from "@/context/CartContext";
+import { useCheckout } from "@/context/CheckoutContext";
+import { createOrder } from "@/lib/apiOrders";
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
-import Spinner from "../../../components/Spinner";
+import Spinner from "@/components/Spinner";
+
+const TAX_RATE = 0.18;
 
 export default function ConfirmPage() {
   const { cart, dispatch } = useCart();
@@ -16,18 +18,32 @@ export default function ConfirmPage() {
 
   const [placing, setPlacing] = useState(false);
 
-  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const tax = Math.round(subtotal * TAX_RATE);
+  const discount = 0;
+  const couponDiscount = 0;
+  const total = subtotal + tax - discount - couponDiscount;
 
-  async function confirm() {
-    if (placing) return;
+  async function confirmOrder() {
+    if (placing || cart.length === 0) return;
 
     setPlacing(true);
 
     try {
-      await createOrder({ userId: user.id, cart, total });
+      await createOrder({
+        userId: user.id,
+        items: cart,
+        pricing: {
+          subtotal,
+          tax,
+          discount,
+          couponDiscount,
+          total,
+        },
+        couponCode: null,
+      });
 
       cart.forEach((i) => dispatch({ type: "REMOVE", payload: i.id }));
-
       setStep(1);
       router.replace("/orders");
     } catch (err) {
@@ -36,29 +52,35 @@ export default function ConfirmPage() {
     }
   }
 
-  //ORDER PLACING LOADER
-
   if (placing) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <Spinner size={42} />
-        <p className="text-sm text-text-muted">Placing your order…</p>
       </div>
     );
   }
 
   return (
-    <div className="card p-8 max-w-xl mx-auto text-center space-y-4">
-      <h1 className="text-2xl font-semibold text-green-600">
-        Order Confirmed 🎉
-      </h1>
+    <div className="card p-8 max-w-xl mx-auto space-y-4">
+      <h1 className="text-2xl font-semibold">Confirm your order</h1>
 
-      <p className="text-text-muted">Thank you for shopping with NeonCart.</p>
+      <div className="space-y-2 text-sm">
+        <div className="flex justify-between">
+          <span>Subtotal</span>
+          <span>₹{subtotal}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Tax</span>
+          <span>₹{tax}</span>
+        </div>
+        <div className="flex justify-between font-semibold border-t pt-3">
+          <span>Total</span>
+          <span>₹{total}</span>
+        </div>
+      </div>
 
-      <div className="font-semibold text-lg">Total Paid: ₹{total}</div>
-
-      <button onClick={confirm} className="btn btn-primary w-full mt-4">
-        View My Orders
+      <button onClick={confirmOrder} className="btn btn-primary w-full">
+        Place Order
       </button>
     </div>
   );

@@ -14,20 +14,28 @@ export default function OrderDetail() {
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    if (user && id) fetchOrder();
-    else if (!loading) setFetching(false);
+    if (!loading && user && id) {
+      fetchOrder();
+    } else if (!loading && !user) {
+      setFetching(false);
+    }
   }, [user, id, loading]);
 
   async function fetchOrder() {
     setFetching(true);
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("orders")
       .select(
         `
         id,
-        total_amount,
         created_at,
+        subtotal_amount,
+        tax_amount,
+        discount_amount,
+        coupon_code,
+        coupon_discount,
+        final_amount,
         order_items (
           id,
           product_id,
@@ -38,10 +46,14 @@ export default function OrderDetail() {
       `
       )
       .eq("id", id)
-      .eq("user_id", user.id)
       .single();
 
-    setOrder(data);
+    if (error) {
+      console.error("FETCH ORDER DETAIL ERROR:", error);
+    } else {
+      setOrder(data);
+    }
+
     setFetching(false);
   }
 
@@ -49,18 +61,22 @@ export default function OrderDetail() {
 
   if (!user) {
     return (
-      <div className="p-6 text-center text-gray-500">
+      <div className="min-h-[60vh] flex items-center justify-center text-gray-500">
         Please login to view order details
       </div>
     );
   }
 
   if (!order) {
-    return <div className="p-6 text-center text-gray-500">Order not found</div>;
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center text-gray-500">
+        Order not found
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       {/* HEADER */}
       <div>
         <h1 className="text-2xl font-semibold">
@@ -71,8 +87,10 @@ export default function OrderDetail() {
         </p>
       </div>
 
-      {/* ITEMS */}
+      {/* ORDER ITEMS */}
       <div className="rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
+        <h2 className="font-semibold mb-2">Items</h2>
+
         {order.order_items.map((item) => (
           <Link
             key={item.id}
@@ -81,17 +99,55 @@ export default function OrderDetail() {
           >
             <div>
               <p className="font-medium">{item.name}</p>
-              <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+              <p className="text-sm text-gray-500">
+                ₹{item.price} × {item.quantity}
+              </p>
             </div>
 
             <p className="font-semibold">₹{item.price * item.quantity}</p>
           </Link>
         ))}
+      </div>
 
-        <div className="border-t pt-3 flex justify-between font-semibold">
-          <span>Total</span>
-          <span>₹{order.total_amount}</span>
+      {/* PRICE BREAKDOWN */}
+      <div className="rounded-2xl border border-gray-200 bg-white p-4 space-y-3">
+        <h2 className="font-semibold mb-2">Price Details</h2>
+
+        <div className="flex justify-between text-sm">
+          <span>Subtotal</span>
+          <span>₹{order.subtotal_amount}</span>
         </div>
+
+        <div className="flex justify-between text-sm">
+          <span>Tax</span>
+          <span>₹{order.tax_amount}</span>
+        </div>
+
+        {order.discount_amount > 0 && (
+          <div className="flex justify-between text-sm text-green-600">
+            <span>Discount</span>
+            <span>- ₹{order.discount_amount}</span>
+          </div>
+        )}
+
+        {order.coupon_code && (
+          <div className="flex justify-between text-sm text-green-600">
+            <span>Coupon ({order.coupon_code})</span>
+            <span>- ₹{order.coupon_discount}</span>
+          </div>
+        )}
+
+        <div className="border-t pt-3 flex justify-between font-semibold text-lg">
+          <span>Total Paid</span>
+          <span>₹{order.final_amount}</span>
+        </div>
+      </div>
+
+      {/* ACTION */}
+      <div>
+        <Link href="/orders" className="text-sm text-primary hover:underline">
+          ← Back to orders
+        </Link>
       </div>
     </div>
   );
