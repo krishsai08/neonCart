@@ -2,14 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import WishlistButton from "@/components/WishlistButton";
 import AddToCartMini from "@/components/AddToCartMini";
-
-// Product Card Component
-// Displays product image, name, category, and price
-// Includes Wishlist and Add to Cart mini button functionalities
-// Styled with Tailwind CSS for a modern look
-// Links to the product detail page on click
+import { useAuth } from "@/context/AuthContext";
 
 export default function ProductCard({ product }) {
+  const { user } = useAuth(); // ✅ check login
+
   return (
     <div className="relative">
       <WishlistButton productId={product.id} />
@@ -28,6 +25,7 @@ export default function ProductCard({ product }) {
             flex flex-col
           "
         >
+          {/* IMAGE */}
           <div className="relative w-full aspect-[16/11]">
             <Image
               src={product.image}
@@ -37,6 +35,7 @@ export default function ProductCard({ product }) {
             />
           </div>
 
+          {/* CONTENT */}
           <div className="px-6 py-4 flex flex-col justify-between flex-1">
             <div>
               <h3 className="text-lg font-medium truncate">{product.name}</h3>
@@ -48,7 +47,8 @@ export default function ProductCard({ product }) {
                 ₹{product.price}
               </span>
 
-              <AddToCartMini product={product} />
+              {/* ✅ Only logged-in users see Add to Cart */}
+              {user && <AddToCartMini product={product} />}
             </div>
           </div>
         </div>
