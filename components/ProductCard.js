@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import WishlistButton from "@/components/WishlistButton";
+import AddToCartMini from "@/components/AddToCartMini";
 
 export default function ProductCard({ product }) {
   return (
@@ -8,7 +9,7 @@ export default function ProductCard({ product }) {
       {/* Wishlist Button */}
       <WishlistButton productId={product.id} />
 
-      {/* Card */}
+      {/* Card Link */}
       <Link href={`/products/${product.id}`} className="block">
         <div
           className="
@@ -30,7 +31,6 @@ export default function ProductCard({ product }) {
               alt={product.name}
               fill
               className="object-cover"
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             />
           </div>
 
@@ -38,18 +38,16 @@ export default function ProductCard({ product }) {
           <div className="px-6 py-4 flex flex-col justify-between flex-1">
             <div>
               <h3 className="text-lg font-medium truncate">{product.name}</h3>
-              <p className="text-sm text-[color:var(--text-muted)] mt-1">
-                {product.category}
-              </p>
+              <p className="text-sm text-muted mt-1">{product.category}</p>
             </div>
 
             <div className="flex items-center justify-between mt-3">
               <span className="text-lg font-semibold text-accent">
                 ₹{product.price}
               </span>
-              <span className="text-sm text-[color:var(--text-muted)]">
-                ⭐ {product.rating}
-              </span>
+
+              {/* SAFE BUTTON */}
+              <AddToCartMini product={product} />
             </div>
           </div>
         </div>
